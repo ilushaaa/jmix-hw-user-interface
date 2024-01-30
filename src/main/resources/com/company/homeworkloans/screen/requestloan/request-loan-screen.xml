@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://requestLoanScreen.caption">
+    <data>
+        <collection id="clientsDc" class="com.company.homeworkloans.entity.Client">
+            <fetchPlan extends="_base"/>
+            <loader id="clientsDl">
+                <query>
+                    <![CDATA[select e from Client e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout expand="buttons">
+
+        <form id="loanForm">
+            <entityComboBox id="clients"
+                            optionsContainer="clientsDc" required="true"
+                            caption="msg://requestLoanScreen.clientCaption"/>
+            <textField id="loanAmount"
+                       datatype="decimal" required="true"
+                       caption="msg://requestLoanScreen.amountCaption">
+                <validators>
+                    <decimalMin value="1"/>
+                </validators>
+            </textField>
+        </form>
+
+        <hbox id="buttons"
+              spacing="true"
+              margin="true,false,false,false"
+              align="MIDDLE_CENTER">
+
+            <button id="requestBtn"
+                    caption="msg://requestLoanScreen.requestBtnCaption"
+                    icon="MONEY"/>
+            <button id="cancelBtn"
+                    caption="msg:///actions.Cancel"
+                    icon="CANCEL"/>
+        </hbox>
+
+    </layout>
+</window>
