@@ -26,19 +26,6 @@ public class LoanApproval extends StandardLookup<Loan> {
     @Autowired
     private CollectionLoader<Loan> loansDl;
 
-    @Subscribe(id = "loansDc", target = Target.DATA_CONTAINER)
-    public void onLoansDcItemChange(final InstanceContainer.ItemChangeEvent<Loan> event) {
-        Loan selectedLoan = event.getItem();
-        if (selectedLoan == null) {
-            return;
-        }
-
-        prevLoansDl.setQuery("select l from Loan l where l.client.id = :clientId and l.id <> :selectedLoanId");
-        prevLoansDl.setParameter("clientId", selectedLoan.getClient().getId());
-        prevLoansDl.setParameter("selectedLoanId", selectedLoan.getId());
-        prevLoansDl.load();
-    }
-
     @Subscribe("approve")
     public void onApproveClick(final Button.ClickEvent event) {
         applyLoanStatus(LoanStatus.APPROVED);
@@ -53,10 +40,6 @@ public class LoanApproval extends StandardLookup<Loan> {
 
     private void updateLoaders() {
         loansDl.load();
-
-        prevLoansDl.setQuery("select l from Loan l where l.client is null");
-        prevLoansDl.removeParameter("clientId");
-        prevLoansDl.removeParameter("selectedLoanId");
         prevLoansDl.load();
     }
 

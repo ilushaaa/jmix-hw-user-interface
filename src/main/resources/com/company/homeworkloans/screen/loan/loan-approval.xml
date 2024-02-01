@@ -22,14 +22,19 @@
             <fetchPlan extends="_base"/>
             <loader id="prevLoansDl">
                 <query>
-                    <![CDATA[select e from Loan e where e.client is null]]>
+                    <![CDATA[select e from Loan e where e <> :a and e.client in
+                        (select ee.client from Loan ee where ee = :a)]]>
                 </query>
             </loader>
         </collection>
 
     </data>
     <facets>
-        <dataLoadCoordinator auto="true"/>
+        <dataLoadCoordinator auto="true">
+            <refresh loader="prevLoansDl">
+                <onContainerItemChanged container="loansDc" param="a"/>
+            </refresh>
+        </dataLoadCoordinator>
         <screenSettings id="settingsFacet" auto="true"/>
     </facets>
     <actions>
